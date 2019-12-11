@@ -1,0 +1,59 @@
+<p-sidebar [(visible)]="visible" [fullScreen]="true" [baseZIndex]="10000"
+  (onHide)="hide()">
+
+  <div class="ui-fluid">
+    <div class="ui-g">
+      <div class="ui-sm-12 ui-md-8 ui-md-offset-2">
+        <h1>Preferences</h1>
+
+        <div class="preferences-transport">
+          <h2>Transport</h2>
+          <label for="transport-username">Username</label>
+          <div class="ui-inputgroup">
+            <span class="ui-inputgroup-addon"><i class="pi pi-user"></i></span>
+            <input type="text" pInputText placeholder="me"
+              id="transport-username" [(ngModel)]="transportUsername">
+          </div>
+
+          <label for="transport-host">Remote Host</label>
+          <div class="ui-inputgroup">
+            <span class="ui-inputgroup-addon"><i class="pi pi-desktop"></i></span>
+            <input type="text" pInputText placeholder="example.com"
+              id="transport-host" [(ngModel)]="transportHost">
+          </div>
+
+          <label for="transport-port">Remote Port</label>
+          <div class="ui-inputgroup">
+            <span class="ui-inputgroup-addon"><i class="pi pi-ticket"></i></span>
+            <input type="number" pInputText placeholder="22"
+              id="transport-port" [(ngModel)]="transportPort">
+          </div>
+
+          <label for="transport-key">Private Key</label>
+          <div class="ui-inputgroup">
+            <span class="ui-inputgroup-addon"><i class="pi pi-key"></i></span>
+            <input type="text" pInputText placeholder="/Users/me/.ssh/id_ed25519"
+              id="transport-key" [(ngModel)]="transportPrivateKey">
+          </div>
+        </div>
+
+        <div class="preferences-downloads">
+          <h2>Downloads</h2>
+          <label for="downloads-complete">Save Downloads To...</label>
+          <div class="ui-inputgroup">
+            <span class="ui-inputgroup-addon"><i class="pi pi-download"></i></span>
+            <input type="text" pInputText placeholder="/Users/me/Desktop/"
+              id="downloads-complete" [(ngModel)]="downloadsComplete">
+          </div>
+
+          <label for="downloads-partials">Save Partial Downloads To...</label>
+          <div class="ui-inputgroup">
+            <span class="ui-inputgroup-addon"><i class="pi pi-briefcase"></i></span>
+            <input type="text" pInputText placeholder=".partials"
+              id="downloads-partial" [(ngModel)]="downloadsPartials">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</p-sidebar>

@@ -1,0 +1,28 @@
+<p-toolbar>
+  <div class="ui-toolbar-group-left">
+    <button pButton type="button"
+      [label]="picker ? 'Hide Filepicker' : 'Show Filepicker'"
+      (click)="togglePicker()"
+      [icon]="picker ? 'pi pi-angle-double-down' : 'pi pi-angle-double-right'"
+      [ngClass]="picker ? 'open' : 'closed'"
+      class="ui-button-rounded"></button>
+    <button pButton [label]="status ? 'Hide Progress' : 'Show Progress'"
+      (click)="toggleStatus()" icon="pi pi-angle-double-down"
+      [icon]="status ? 'pi pi-angle-double-down' : 'pi pi-angle-double-right'"
+      type="button" [ngClass]="status ? 'open' : 'closed'"
+      class="ui-button-rounded"></button>
+  </div>
+  <div class="ui-toolbar-group-right">
+    <button pButton type="button" icon="pi pi-bars"
+      (click)="preferences = ! preferences"
+      [ngClass]="preferences ? 'open' : 'closed'"></button>
+  </div>
+</p-toolbar>
+<div [hidden]="! picker">
+  <app-downloader-picker (download)="showStatus()"></app-downloader-picker>
+</div>
+<div [hidden]="! status">
+  <app-downloader-status></app-downloader-status>
+</div>
+<app-downloader-preferences
+  [(visible)]="preferences"></app-downloader-preferences>

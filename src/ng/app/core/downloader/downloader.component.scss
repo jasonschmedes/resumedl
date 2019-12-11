@@ -1,0 +1,32 @@
+// Variables used in the downloader component.
+$open-background-color: #1ea04c;
+$open-border-color: #000;
+$open-color: #fff;
+$closed-background-color: #9100ff;
+$closed-border-color: #92d3de;
+$closed-color: #92d3de;
+$font-family: Optima, Segoe, 'Segoe UI', Candara, Calibri, Arial, sans-serif;
+
+// Style the toolbar.
+p-toolbar {
+  button {
+    &.ui-button {
+      font-family: $font-family;
+      font-weight: bold;
+      margin: .5rem;
+      padding: 0 .2rem;
+
+      &.open {
+        background-color: $open-background-color;
+        border-color: $open-border-color;
+        color: $open-color;
+      }
+
+      &.closed {
+        background-color: $closed-background-color;
+        border-color: $closed-border-color;
+        color: $closed-color;
+      }
+    }
+  }
+}

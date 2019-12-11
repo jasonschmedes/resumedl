@@ -1,0 +1,38 @@
+<div class="ui-fluid list">
+  <div class="ui-g">
+    <div class="ui-g-4 ui-g-nopad">
+      <div class="ui-inputgroup">
+        <button pButton type="button" label="List"
+          (click)="handleClickList()"></button>
+        <input type="text" pInputText placeholder="/Users/me/Documents/"
+          id="list-path" [(ngModel)]="listPath">
+        <span class="ui-inputgroup-addon"><i class="pi pi-folder-open"></i></span>
+      </div>
+    </div>
+  </div>
+</div>
+<div>
+  <p-pickList [source]="available" sourceHeader="Available"
+    [target]="queued" targetHeader="Queued"
+    [responsive]="true" [dragdrop]="dragdrop" filterBy="basename"
+    sourceFilterPlaceholder="Search by name or year"
+    targetFilterPlaceholder="Search by name or year"
+    [sourceStyle]="{'height':'400px'}" [targetStyle]="{'height':'400px'}"
+    [disabled]="disabled"
+    [showSourceControls]="showSourceControls"
+    [showTargetControls]="showTargetControls">
+    <ng-template let-file pTemplate="item">
+      <app-downloader-picker-row [file]="file"></app-downloader-picker-row>
+    </ng-template>
+  </p-pickList>
+</div>
+<div class="ui-g start-download">
+  <div class="ui-g-12 ui-g-nopad">
+    <button pButton label="Start Download" [disabled]="downloading"
+      icon="pi pi-download" (click)="start()"
+      class="ui-button-rounded"></button>
+    <button pButton label="Stop Download" [disabled]=" ! downloading"
+      icon="pi pi-times-circle" (click)="stop()"
+      class="ui-button-danger ui-button-rounded"></button>
+  </div>
+</div>
