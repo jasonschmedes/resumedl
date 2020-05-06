@@ -54,6 +54,9 @@ const createWindow = () => {
 }
 
 const initialize = () => {
+  // See issue https://github.com/electron/electron/issues/18397.
+  app.allowRendererProcessReuse = true
+
   // Start the backend daemon.
   start.run()
 

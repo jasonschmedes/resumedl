@@ -36,11 +36,15 @@ export class PickerComponent implements OnInit {
 
   ngOnInit() {
     this.reset()
+    this.storeService.lookup('listPath').then((path) => {
+      this.listPath = path
+      this.browserService.browse(path)
+    })
     this.browserService.path.subscribe(path => {
       console.log('Observed path change: ', path)
       if (path) {
         this.listPath = path
-        this.handleClickList()
+        this.listFiles()
       }
     })
 
@@ -84,7 +88,7 @@ export class PickerComponent implements OnInit {
         icon: nameSortIcon,
         command: () => {
           this.lsService.toggleSortByName()
-          this.handleClickList()
+          this.listFiles()
           this.buildButtons()
         },
       },
@@ -93,7 +97,7 @@ export class PickerComponent implements OnInit {
         icon: timeSortIcon,
         command: () => {
           this.lsService.toggleSortByTime()
-          this.handleClickList()
+          this.listFiles()
           this.buildButtons()
         },
       },
@@ -131,11 +135,14 @@ export class PickerComponent implements OnInit {
   /**
    * List the files for the directory in the specified sort order.
    */
-  async handleClickList() {
+  async listFiles() {
     this.reset()
-    this.available = []
     this.storeService.keep('listPath', this.listPath)
     this.available = await this.lsService.listFiles(this.listPath)
+  }
+
+  handleClickList() {
+    this.browserService.browse(this.listPath)
   }
 
   /**

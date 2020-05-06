@@ -1,33 +1,21 @@
-import { BehaviorSubject } from 'rxjs'
+import { Subject } from 'rxjs'
 import { Injectable } from '@angular/core'
 import * as nodePath from 'path'
 
 // import { MessageService } from '../../message/message.service'
-import { StoreService } from '../../store/store.service'
 
 @Injectable({
   providedIn: 'root'
 })
 export class BrowserService {
-  public path: BehaviorSubject<string> = new BehaviorSubject('/')
+  public path: Subject<string> = new Subject()
 
   private history: string[] = []
   private pointer = 0
 
   constructor(
     // private messageService: MessageService,
-    private storeService: StoreService,
-  ) {
-    this.init()
-  }
-
-  async init() {
-    const path = await this.storeService.lookup('listPath')
-    console.log('Saved Path: ', path)
-    if (path) {
-      this.browse(path)
-    }
-  }
+  ) { }
 
   /**
    * Move the pointer back one and change to that directory if there's history.
@@ -84,7 +72,7 @@ export class BrowserService {
    * Broadcast the new directory if it is exists
    */
   private changeDirectory(path: string) {
-    if (this.path) {
+    if (path) {
       this.path.next(path)
     }
   }
