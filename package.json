@@ -1,7 +1,7 @@
 {
   "name": "rsyncgui",
   "productName": "ResumeDL",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "A GUI for the rsync command line utitily.",
   "main": "src/main.js",
   "scripts": {
