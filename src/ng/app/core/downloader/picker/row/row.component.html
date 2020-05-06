@@ -1,4 +1,4 @@
-<div class="p-grid p-justify-between p-align-center">
+<div #row class="p-grid p-justify-between p-align-center">
   <div class="p-col-2">
     <img src="assets/images/filetypes/{{file.type}}.png"
       style="display:inline-block;margin:2px 0 2px 2px" width="48">
@@ -7,3 +7,41 @@
     {{ file.toString() }}
   </div>
 </div>
+<p-contextMenu [target]="row" [model]="menu"></p-contextMenu>
+<p-dialog header="{{ file.toString() }}" [(visible)]="details">
+  <table>
+    <caption>File Details</caption>
+    <thead></thead>
+    <tbody>
+      <tr>
+        <th>Name</th>
+        <td>{{ file.basename }}</td>
+      </tr>
+      <tr>
+        <th>Year</th>
+        <td>{{ file.year }}</td>
+      </tr>
+      <tr>
+        <th>Type</th>
+        <td>{{ file.type }}</td>
+      </tr>
+      <tr *ngIf=!this.file.directory()>
+        <th>Size</th>
+        <td>{{ size?.human }}</td>
+      </tr>
+    </tbody>
+  </table>
+  <table *ngIf=file.seasoned()>
+    <caption>Television</caption>
+    <tbody>
+      <tr>
+        <th>Season</th>
+        <td>{{ file.parsed.season }}</td>
+      </tr>
+      <tr>
+        <th>Episode</th>
+        <td>{{ file.parsed.episode }}</td>
+      </tr>
+    </tbody>
+  </table>
+</p-dialog>

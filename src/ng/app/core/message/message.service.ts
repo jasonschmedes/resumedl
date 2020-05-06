@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core'
 
 import { Observable, of } from 'rxjs'
 
-import { Message } from 'primeng/components/common/api'
+import { Message } from 'primeng/api'
 
 import { environment } from '../../../environments/environment'
 

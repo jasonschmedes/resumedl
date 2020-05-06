@@ -43,7 +43,7 @@ export class IpcService {
    * Arguments will be serialized as JSON internally and hence no functions or
    * prototype chain will be included.
    */
-  public send(channel: string, ...args): void {
+  public send(channel: string, ...args: any[]): void {
     if ( ! this.ipc) {
       return
     }
@@ -56,7 +56,7 @@ export class IpcService {
    * Arguments will be serialized as JSON internally and hence no functions or
    * prototype chain will be included.
    */
-  public async invoke(channel: string, ...args): Promise<any> {
+  public async invoke(channel: string, ...args: any[]): Promise<any> {
     if ( ! this.ipc) {
       return
     }

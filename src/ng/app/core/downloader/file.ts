@@ -1,7 +1,10 @@
+import * as parseFilename from 'parse-torrent-name'
+
 export class File {
   basename: string
   ext: string
   name: string
+  parsed: any
   path: string
   type: string
   year: string
@@ -11,6 +14,7 @@ export class File {
     this.ext = extname(path)
     this.basename = basename(path, this.ext)
     this.type = this.ext ? this.ext.substr(1) : 'directory'
+    this.parsed = parseFilename(path)
 
     try {
       this.year = this.basename.split('(')[1].split(')')[0]
@@ -24,7 +28,16 @@ export class File {
       'basename', this.basename,
       'type', this.type,
       'year', this.year,
-      'name', name)
+      'name', name
+    )
+  }
+
+  directory() {
+    return this.type === 'directory'
+  }
+
+  seasoned() {
+    return this.parsed.season
   }
 
   toString() {

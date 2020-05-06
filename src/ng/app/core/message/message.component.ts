@@ -1,6 +1,6 @@
 import { Component } from '@angular/core'
 
-import { Message } from 'primeng/components/common/api'
+import { Message } from 'primeng/api'
 
 import { MessageService } from './message.service'
 

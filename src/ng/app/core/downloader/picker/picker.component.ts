@@ -1,8 +1,11 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core'
+import { MenuItem } from 'primeng/api'
 
+
+import { BrowserService } from './browser.service'
 import { DownloaderService } from '../downloader.service'
 import { File } from '../file'
-import { IpcService } from '../../ipc/ipc.service'
+import { LsService } from './ls.service'
 import { MessageService } from '../../message/message.service'
 import { StoreService } from '../../store/store.service'
 
@@ -14,6 +17,7 @@ import { StoreService } from '../../store/store.service'
 export class PickerComponent implements OnInit {
 
   available: File[] = []
+  buttons: MenuItem[] = []
   disabled: boolean
   @Output() download = new EventEmitter<boolean>()
   dragdrop: boolean
@@ -23,15 +27,77 @@ export class PickerComponent implements OnInit {
   showTargetControls: boolean
 
   constructor(
+    private browserService: BrowserService,
     private downloaderService: DownloaderService,
-    private ipcService: IpcService,
+    private lsService: LsService,
     private messageService: MessageService,
     private storeService: StoreService,
   ) { }
 
-  async ngOnInit() {
+  ngOnInit() {
     this.reset()
-    this.listPath = await this.storeService.lookup('listPath')
+    this.browserService.path.subscribe(path => {
+      console.log('Observed path change: ', path)
+      if (path) {
+        this.listPath = path
+        this.handleClickList()
+      }
+    })
+
+    this.buildButtons()
+  }
+
+  /**
+   * Dynamically create the menu buttons depending on the current state.
+   */
+  private buildButtons() {
+    let nameSortIcon = 'pi pi-sort-alt'
+    let timeSortIcon = 'pi pi-clock'
+
+    if (this.lsService.orderBy === 'name') {
+      nameSortIcon = this.lsService.direction === 'desc' ? 'pi pi-sort-alpha-down-alt' : 'pi pi-sort-alpha-down'
+    } else if (this.lsService.orderBy === 'mtime') {
+      timeSortIcon = this.lsService.direction === 'desc' ? 'pi pi-directions-alt' : 'pi pi-directions'
+    }
+
+    this.buttons = [
+      {
+        title: 'Back',
+        icon: 'pi pi-chevron-circle-left',
+        command: () => { this.browserService.backward() },
+      },
+      {
+        title: 'Up',
+        icon: 'pi pi-chevron-circle-up',
+        command: () => { this.browserService.up() },
+      },
+      {
+        title: 'Forward',
+        icon: 'pi pi-chevron-circle-right',
+        command: () => { this.browserService.forward() },
+      },
+      {
+        separator: true,
+      },
+      {
+        title: 'Sort By Name',
+        icon: nameSortIcon,
+        command: () => {
+          this.lsService.toggleSortByName()
+          this.handleClickList()
+          this.buildButtons()
+        },
+      },
+      {
+        title: 'Sort By Time',
+        icon: timeSortIcon,
+        command: () => {
+          this.lsService.toggleSortByTime()
+          this.handleClickList()
+          this.buildButtons()
+        },
+      },
+    ]
   }
 
   reset() {
@@ -55,17 +121,26 @@ export class PickerComponent implements OnInit {
     this.showTargetControls = false
   }
 
+  /**
+   * True if a download is in progress. False otherwise.
+   */
   get downloading() {
     return this.downloaderService.current() ? true : false
   }
 
+  /**
+   * List the files for the directory in the specified sort order.
+   */
   async handleClickList() {
     this.reset()
     this.available = []
     this.storeService.keep('listPath', this.listPath)
-    this.available = await this.listFiles()
+    this.available = await this.lsService.listFiles(this.listPath)
   }
 
+  /**
+   * Start processing the download queue.
+   */
   async start() {
     if (this.queued.length === 0) {
       this.messageService.add(
@@ -89,42 +164,15 @@ export class PickerComponent implements OnInit {
     }
   }
 
+  /**
+   * Kill the download process.
+   */
   async stop() {
     const download = await this.downloaderService.stop()
     this.download.emit(false) // Notify the parent of the stop download.
     if (download) {
       this.queued.unshift(download.file)
     }
-  }
-
-  /**
-   * List the files available for download in the directory.
-   *
-   * The IPC invokes the `ls $dir` remote command request.
-   */
-  async listFiles() {
-    this.messageService.add(
-      `ls ${this.listPath}`,
-      'Invoke',
-      'info'
-    )
-    let data = []
-    try {
-      const response = await this.ipcService.invoke('remote-command-request', {
-        procedure: 'ls',
-        args: [this.listPath],
-      })
-      data = JSON.parse(response)
-    } catch (e) {
-      console.log(e)
-      this.messageService.add(
-        `Cannot retrieve the file list.`,
-        'Filepicker Error',
-        'error'
-      )
-    }
-
-    return data.map((filename: string) => new File(filename))
   }
 
 }

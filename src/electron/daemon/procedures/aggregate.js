@@ -3,6 +3,7 @@
  */
 const { command: dl } = require('./dl/command')
 const { command: ls } = require('./ls/command')
+const { command: stat } = require('./stat/command')
 
 const procedures = {
 
@@ -15,6 +16,11 @@ const procedures = {
    * List the files.
    */
   ls,
+
+  /**
+   * Get file stats.
+   */
+  stat,
 
 }
 

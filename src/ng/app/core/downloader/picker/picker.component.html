@@ -12,6 +12,9 @@
   </div>
 </div>
 <div>
+  <div class="ui-g">
+    <p-menubar [model]="buttons"></p-menubar>
+  </div>
   <p-pickList [source]="available" sourceHeader="Available"
     [target]="queued" targetHeader="Queued"
     [responsive]="true" [dragdrop]="dragdrop" filterBy="basename"

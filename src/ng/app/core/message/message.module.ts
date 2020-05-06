@@ -3,10 +3,10 @@ import { NgModule } from '@angular/core'
 
 import {
   MessageModule as PrimeNgMessageModule
-} from 'primeng/components/message/message'
+} from 'primeng/message'
 import {
   MessagesModule as PrimeNgMessagesModule
-} from 'primeng/components/messages/messages'
+} from 'primeng/messages'
 
 import { MessageComponent } from './message.component'
 
